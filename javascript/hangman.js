@@ -1,19 +1,34 @@
 class Hangman {
-  constructor(words) {
+  constructor(words) { // ['asdfa']
     this.words = words;
-    // ... your code goes here
+    this.secretWord = this.pickWord()
+
   }
 
   pickWord() {
-    // ... your code goes here
+    const pickedWord = Math.floor(Math.random() * this.words.length).toString()
+    return pickedWord;
   }
 
+//console.log(pickWord)
+
+  //console.log(secretWord);
+ 
+
   checkIfLetter(keyCode) {
-    // ... your code goes here
+    const letterArray = Array.from(this.secretWord);
   }
 
   checkClickedLetters(letter) {
     // ... your code goes here
+    const gessedLetter = '';
+    
+/*const letterFound = this.secretWord.split() {
+      for (let i = 0; i<= this.secretWord.length; i++) {
+        if (letterCalled === this.secretWord.[i])
+      }
+    }*/
+
   }
 
   addCorrectLetter(letter) {
