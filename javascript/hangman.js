@@ -72,17 +72,29 @@ if (startGameButton) {
 
 document.addEventListener('keydown', event => {
 
-  hangmanCanvas.writeCorrectLetter(3);
+  //hangmanCanvas.writeCorrectLetter(3);
+  
 
   // React to user pressing a key
   // ... your code goes here
-
+  if (Hangman.checkIfLetter(event.KeyCode)){
+    if (Hangman.checkClickedLetters()){
+      if(this.secretWord.includes(this.letter)){
+        Hangman.addCorrectLetter(this.letter)
+        HangmanCanvas.writeCorrectLetter(this.secretWord.indexOf(this.letter))
+      }
+      else{
+        Hangman.addWrongLetter(this.letter)
+        HangmanCanvas.writeWrongLetter(this.letter,this.errorsLeft)
+      }
+    }
+  }
   // n. Check if "event.keyCode" is in secretWord
 
   
 
   /*if // Pressed letter is in the secretWord
-    hangman.writeCorrectLetter()
+    hangmanCanvas.writeCorrectLetter()
   } else {
     writeWrongLetter()
   }*/
