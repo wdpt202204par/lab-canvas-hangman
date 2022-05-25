@@ -61,42 +61,32 @@ const startGameButton = document.getElementById('start-game-button');
 if (startGameButton) {
   startGameButton.addEventListener('click', event => {
     hangman = new Hangman(['node', 'javascript', 'react', 'miami', 'paris', 'amsterdam', 'lisboa']);
-
-    // HINT (uncomment when start working on the canvas portion of the lab)
     hangman.secretWord = hangman.pickWord();
     hangmanCanvas = new HangmanCanvas(hangman.secretWord);
-
+    
+    //on fait disparaitre l'image et le bouton lorsque la partie démarre
+    document.querySelector("img").style.display = "none"
+    document.querySelector("button").style.display = "none"
     // ... your code goes here
   });
 }
 
 document.addEventListener('keydown', event => {
-
-  //hangmanCanvas.writeCorrectLetter(3);
-  
-
-  // React to user pressing a key
-  // ... your code goes here
-  if (Hangman.checkIfLetter(event.KeyCode)){
-    if (Hangman.checkClickedLetters()){
-      if(this.secretWord.includes(this.letter)){
-        Hangman.addCorrectLetter(this.letter)
-        HangmanCanvas.writeCorrectLetter(this.secretWord.indexOf(this.letter))
+  hangmanCanvas.writeCorrectLetter(3)
+  //penser a ajouter un toUppercase() avant d'afficher la lettre
+  const myKey=event.key
+  console.log("pressed key=",myKey)
+  if (hangman.checkIfLetter(event.KeyCode)){
+      if(hangman.secretWord.includes(myKey)){
+        hangman.addCorrectLetter(myKey)
+        let index = hangman.secretWord.indexOf(myKey);
+        hangmanCanvas.writeCorrectLetter(index);
+        //hangmanCanvas.writeCorrectLetter(hangman.secretWord.indexOf(myKey))
       }
       else{
-        Hangman.addWrongLetter(this.letter)
-        HangmanCanvas.writeWrongLetter(this.letter,this.errorsLeft)
+        hangman.addWrongLetter(myKey)
+        hangmanCanvas.writeWrongLetter(myKey,hangman.errorsLeft)
       }
     }
-  }
-  // n. Check if "event.keyCode" is in secretWord
+  });
 
-  
-
-  /*if // Pressed letter is in the secretWord
-    hangmanCanvas.writeCorrectLetter()
-  } else {
-    writeWrongLetter()
-  }*/
-
-});
