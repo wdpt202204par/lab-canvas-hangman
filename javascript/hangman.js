@@ -46,6 +46,7 @@ class Hangman {
 
   checkGameOver() {
     if (this.errorsLeft === 0) {
+      console.log("Game Over")
       return true;
     } else {
       return false;
@@ -65,15 +66,17 @@ class Hangman {
       }
     }
     if (rightAnswers === this.secretWord.length) {
+      console.log("Partie terminé")
       return true;
     } else {
+      console.log("Partie pas fini")
       return false;
     }
   }
 }
 
 let hangman;
-
+let gameover = true
 const startGameButton = document.getElementById("start-game-button");
 
 if (startGameButton) {
@@ -89,9 +92,10 @@ if (startGameButton) {
     ]);
 
     // HINT (uncomment when start working on the canvas portion of the lab)
-    // hangman.secretWord = hangman.pickWord();
-    // hangmanCanvas = new HangmanCanvas(hangman.secretWord);
-
+     hangman.secretWord = hangman.pickWord();
+     hangmanCanvas = new HangmanCanvas(hangman.secretWord);
+     gameover = false
+     hangmanCanvas.createBoard()
     // ... your code goes here
   });
 }
@@ -99,4 +103,35 @@ if (startGameButton) {
 document.addEventListener("keydown", (event) => {
   // React to user pressing a key
   // ... your code goes here
+
+  if (!gameover){
+    console.log(event.key)
+    console.log("secret word =",hangman.secretWord)
+  if (hangman.checkIfLetter(event.keyCode)){
+    console.log("1")
+    for (let i = 0; i < hangman.secretWord.length; i++){
+        if (hangman.secretWord[i].includes(event.key)){
+          console.log("2")
+          hangman.addCorrectLetter(event.key)
+    
+          hangmanCanvas.writeCorrectLetter(i)
+        }
+
+      }
+      // Bonne reponse
+
+      
+    }else{
+      // Mauvaise reponse
+      console.log("3")
+      hangman.addWrongLetter(event.key)
+      hangmanCanvas.writeWrongLetter(event.key, hangman.errorsLeft)
+      if (hangman.checkGameOver()){
+        gameover = true
+      }
+      
+    }
+  }
+
+
 });
