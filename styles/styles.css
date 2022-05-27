@@ -1,7 +1,14 @@
-.game-logo {
-
+*{
+  margin:0;
+  padding:0;
 }
-
+body{
+  height:100vh;
+  background-color: grey;
+}
+#game-logo{
+  padding-top: 0;
+}
 #start-game-button {
   border: 0;
   box-shadow: 0;
@@ -14,4 +21,12 @@
 
 #hangman {
   text-align: center;
+}
+
+canvas{
+  border:5px solid black;
+  background-color: white;
+  width: 2400px;
+  height: auto;
+
 }
