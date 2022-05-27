@@ -2,9 +2,9 @@ class Hangman {
   constructor(words) {
     this.words = words;
     this.secretWord = this.pickWord();
-    this.letters = []
-    this.guessedLetters =''
-    this.errorsLeft=10
+    this.letters = [];
+    this.guessedLetters ='';
+    this.errorsLeft=10;
   }
 
   pickWord() {
@@ -21,36 +21,23 @@ class Hangman {
   }
 
   checkClickedLetters(letter) {
-    let result = true
-    for (let i=0; i<this.letters.length; i++){ 
-      if (letter===this.letters[i]){
-        result = false
-      }
-    }
-    return result
+    return !this.letters.includes(letter)
   }
   addCorrectLetter(letter) {
     this.guessedLetters += letter
   }
 
   addWrongLetter(letter) {
-    this.errorsLeft -= 1
-    if (this.checkClickedLetters){
+    this.errorsLeft --
     this.letters.push(letter)
     }
-  }
 
   checkGameOver() {
-    while (this.errorsLeft >0){
-      return false
-    }
-    if (this.errorsLeft === 0){
-      return true
-    }
+    return this.errorsLeft === 0
   }
 
   checkWinner() {
-    return ((this.guessedLetters.length === this.secretWord.length) && !this.checkGameOver())
+    return this.secretWord.split("").sort().join("") === this.guessedLetters.split("").sort().join("") && !this.checkGameOver();
   }
 }
 
@@ -63,30 +50,43 @@ if (startGameButton) {
     hangman = new Hangman(['node', 'javascript', 'react', 'miami', 'paris', 'amsterdam', 'lisboa']);
     hangman.secretWord = hangman.pickWord();
     hangmanCanvas = new HangmanCanvas(hangman.secretWord);
-    
-    //on fait disparaitre l'image et le bouton lorsque la partie démarre
-    document.querySelector("img").style.display = "none"
-    document.querySelector("button").style.display = "none"
-    // ... your code goes here
   });
 }
 
 document.addEventListener('keydown', event => {
-  hangmanCanvas.writeCorrectLetter(3)
-  //penser a ajouter un toUppercase() avant d'afficher la lettre
-  const myKey=event.key
-  console.log("pressed key=",myKey)
-  if (hangman.checkIfLetter(event.KeyCode)){
+
+  if(hangman.checkIfLetter(event.keyCode)){
+    const myKey=event.key.toLowerCase();
+    
+    if(hangman.checkClickedLetters(myKey)&!hangman.guessedLetters.includes(myKey)){
       if(hangman.secretWord.includes(myKey)){
-        hangman.addCorrectLetter(myKey)
-        let index = hangman.secretWord.indexOf(myKey);
-        hangmanCanvas.writeCorrectLetter(index);
-        //hangmanCanvas.writeCorrectLetter(hangman.secretWord.indexOf(myKey))
+        let position=0
+        let index;
+        while(hangman.secretWord.indexOf(myKey,position)>=0){
+          index=hangman.secretWord.indexOf(myKey,position);
+          position = index+1;
+          hangman.addCorrectLetter(myKey);
+          hangmanCanvas.writeCorrectLetter(index)
+        }
+        if (hangman.checkWinner()){
+          hangmanCanvas.winner()
+        }
       }
       else{
-        hangman.addWrongLetter(myKey)
-        hangmanCanvas.writeWrongLetter(myKey,hangman.errorsLeft)
+        hangman.addWrongLetter(myKey);
+        hangmanCanvas.writeWrongLetter(myKey,hangman.errorsLeft);
+        console.log('errorsleft:',hangman.errorsLeft)
+        if(hangman.checkGameOver()){
+          hangmanCanvas.gameOver()
+        }
       }
     }
-  });
+    else{
+      alert(`You already tried ${event.key.toUpperCase()}.`)
+    }
+  }
+  else{
+    alert(`${event.key.toUpperCase()} is not a letter`)
+  }
+});
 
