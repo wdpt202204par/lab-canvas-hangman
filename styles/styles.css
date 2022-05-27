@@ -1,6 +1,13 @@
+*{
+  margin:0;
+  padding:0;
+}
 body{
   height:100vh;
   background-color: grey;
+}
+#game-logo{
+  padding-top: 0;
 }
 #start-game-button {
   border: 0;

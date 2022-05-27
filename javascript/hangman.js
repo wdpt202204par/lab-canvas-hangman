@@ -55,38 +55,38 @@ if (startGameButton) {
 
 document.addEventListener('keydown', event => {
 
-  if(hangman.checkIfLetter(event.keyCode)){
-    const myKey=event.key.toLowerCase();
+  if(!hangman.checkGameOver() && !hangman.checkWinner()){
+    if(hangman.checkIfLetter(event.keyCode)){
+      const myKey=event.key.toLowerCase();
     
-    if(hangman.checkClickedLetters(myKey)&!hangman.guessedLetters.includes(myKey)){
-      if(hangman.secretWord.includes(myKey)){
-        let position=0
-        let index;
-        while(hangman.secretWord.indexOf(myKey,position)>=0){
-          index=hangman.secretWord.indexOf(myKey,position);
-          position = index+1;
-          hangman.addCorrectLetter(myKey);
-          hangmanCanvas.writeCorrectLetter(index)
+      if(hangman.checkClickedLetters(myKey)&!hangman.guessedLetters.includes(myKey)){
+        if(hangman.secretWord.includes(myKey)){
+          let position=0
+          let index;
+          while(hangman.secretWord.indexOf(myKey,position)>=0){
+            index=hangman.secretWord.indexOf(myKey,position);
+            position = index+1;
+            hangman.addCorrectLetter(myKey);
+            hangmanCanvas.writeCorrectLetter(index)
+          }
+          if (hangman.checkWinner()){
+            hangmanCanvas.winner()
+          }
         }
-        if (hangman.checkWinner()){
-          hangmanCanvas.winner()
+        else{
+          hangman.addWrongLetter(myKey);
+          hangmanCanvas.writeWrongLetter(myKey,hangman.errorsLeft);
+          if(hangman.checkGameOver()){
+            hangmanCanvas.gameOver()
+          }
         }
       }
       else{
-        hangman.addWrongLetter(myKey);
-        hangmanCanvas.writeWrongLetter(myKey,hangman.errorsLeft);
-        console.log('errorsleft:',hangman.errorsLeft)
-        if(hangman.checkGameOver()){
-          hangmanCanvas.gameOver()
-        }
+        alert(`You already tried ${event.key.toUpperCase()}.`)
       }
     }
     else{
-      alert(`You already tried ${event.key.toUpperCase()}.`)
+      alert(`${event.key.toUpperCase()} is not a letter`)
     }
   }
-  else{
-    alert(`${event.key.toUpperCase()} is not a letter`)
-  }
 });
-
